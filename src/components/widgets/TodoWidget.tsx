@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Check } from 'lucide-react';
+import { useTheme } from '@/contexts/theme-context';
 
 interface Todo {
   id: number;
@@ -10,6 +11,7 @@ interface Todo {
 const TodoWidget = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState('');
+  const { theme } = useTheme();
   
   // Load todos from localStorage on mount
   useEffect(() => {
@@ -75,11 +77,15 @@ const TodoWidget = () => {
         {todos.map(todo => (
           <div 
             key={todo.id} 
-            className="flex items-center py-2 border-b border-white/5 last:border-0 light:border-black/5"
+            className="flex items-center py-2 border-b border-white/5 dark:border-white/5 light:border-black/10 last:border-0"
           >
             <div 
               className={`w-5 h-5 rounded-full border flex items-center justify-center mr-3 cursor-pointer
-                ${todo.completed ? 'bg-blue-500 border-blue-500' : 'border-white/30 light:border-black/20'}`}
+                ${todo.completed 
+                  ? 'bg-blue-500 border-blue-500' 
+                  : theme.mode === 'dark' 
+                    ? 'border-white/30'
+                    : 'border-black/30'}`}
               onClick={() => toggleTodo(todo.id)}
             >
               {todo.completed && <Check size={12} className="widget-text" />}

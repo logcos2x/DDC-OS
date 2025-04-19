@@ -110,6 +110,7 @@ const Widget: React.FC<WidgetProps> = ({
         theme.style === 'glass' ? 'glass-widget' : 'solid-widget',
         'absolute animate-fade-in widget',
         hideControls ? 'widget-no-controls' : '',
+        theme.mode === 'light' && theme.style === 'solid' ? 'light-solid-widget' : '',
         className
       )}
       style={{ width: `${width}px` }}

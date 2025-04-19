@@ -399,7 +399,9 @@ const Index = () => {
           </Button>
         )}
         
-        {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+        <span className="navbar-time">
+          {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+        </span>
       </div>
       
       {/* Global search at top */}

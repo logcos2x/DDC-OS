@@ -1,6 +1,8 @@
 import { Clock, FileText, Cloud, Calculator, ListTodo, Search, Image, Quote, Bell, Settings } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useNotificationContext } from '@/contexts/notification-context';
+import { useTheme } from '@/contexts/theme-context';
+import { cn } from '@/lib/utils';
 
 interface DockProps {
   onAddWidget: (type: string) => void;
@@ -10,13 +12,17 @@ interface DockProps {
 
 const Dock: React.FC<DockProps> = ({ onAddWidget, onToggleWallpaper, onToggleNotifications }) => {
   const { unreadCount } = useNotificationContext();
+  const { theme } = useTheme();
   
   return (
-    <div className="dock animate-fade-in">
+    <div className={cn(
+      "dock animate-fade-in", 
+      theme.style === 'solid' ? 'solid-dock' : ''
+    )}>
       <TooltipProvider delayDuration={300}>
         <Tooltip>
           <TooltipTrigger asChild>
-            <button className="dock-item" onClick={() => onAddWidget('clock')}>
+            <button className="dock-item white-text" onClick={() => onAddWidget('clock')}>
               <Clock size={20} />
             </button>
           </TooltipTrigger>

@@ -4,6 +4,7 @@ import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useTheme } from '@/contexts/theme-context';
 import { 
   Paintbrush, 
@@ -24,13 +25,11 @@ const SettingsWidget = () => {
   const [activeTab, setActiveTab] = useState('appearance');
 
   const handleToggleMode = () => {
-    // Explicitly set the theme mode to ensure correct toggling
     updateTheme({ mode: theme.mode === 'dark' ? 'light' : 'dark' });
   };
 
-  const handleToggleStyle = () => {
-    // Explicitly set the style to ensure correct toggling
-    updateTheme({ style: theme.style === 'glass' ? 'solid' : 'glass' });
+  const handleStyleChange = (value: string) => {
+    updateTheme({ style: value as 'glass' | 'solid' });
   };
 
   return (
@@ -69,39 +68,65 @@ const SettingsWidget = () => {
               </div>
 
               <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-2">
-                    {theme.style === 'glass' ? <Layers size={16} /> : <Square size={16} />}
-                    <Label htmlFor="style">Visual Style</Label>
+                <Label>Visual Style</Label>
+                <RadioGroup 
+                  value={theme.style} 
+                  onValueChange={handleStyleChange}
+                  className="grid grid-cols-2 gap-2 pt-2"
+                >
+                  <div>
+                    <Label 
+                      htmlFor="style-glass" 
+                      className="flex flex-col items-center gap-2 rounded-md border-2 p-4 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors"
+                      style={{
+                        borderColor: theme.style === 'glass' ? 'hsl(var(--primary))' : 'transparent',
+                        background: theme.style === 'glass' ? 'hsl(var(--accent))' : ''
+                      }}
+                    >
+                      <Layers size={20} />
+                      <RadioGroupItem value="glass" id="style-glass" className="sr-only" />
+                      <span>Glass</span>
+                    </Label>
                   </div>
-                  <Switch
-                    id="style"
-                    checked={theme.style === 'glass'}
-                    onCheckedChange={handleToggleStyle}
-                  />
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  Toggle between glass and solid visual styles
+                  <div>
+                    <Label 
+                      htmlFor="style-solid" 
+                      className="flex flex-col items-center gap-2 rounded-md border-2 p-4 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors"
+                      style={{
+                        borderColor: theme.style === 'solid' ? 'hsl(var(--primary))' : 'transparent',
+                        background: theme.style === 'solid' ? 'hsl(var(--accent))' : ''
+                      }}
+                    >
+                      <Square size={20} />
+                      <RadioGroupItem value="solid" id="style-solid" className="sr-only" />
+                      <span>Solid</span>
+                    </Label>
+                  </div>
+                </RadioGroup>
+                <p className="text-xs text-muted-foreground mt-2">
+                  Choose between glass effect or solid background
                 </p>
               </div>
 
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <Label htmlFor="blur">Blur Strength</Label>
-                  <span className="text-xs text-muted-foreground">{theme.blurStrength}px</span>
+              {theme.style === 'glass' && (
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <Label htmlFor="blur">Blur Strength</Label>
+                    <span className="text-xs text-muted-foreground">{theme.blurStrength}px</span>
+                  </div>
+                  <Slider
+                    id="blur"
+                    min={0}
+                    max={20}
+                    step={1}
+                    value={[theme.blurStrength]}
+                    onValueChange={(value) => updateTheme({ blurStrength: value[0] })}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Adjust the blur effect for glass elements
+                  </p>
                 </div>
-                <Slider
-                  id="blur"
-                  min={0}
-                  max={20}
-                  step={1}
-                  value={[theme.blurStrength]}
-                  onValueChange={(value) => updateTheme({ blurStrength: value[0] })}
-                />
-                <p className="text-xs text-muted-foreground">
-                  Adjust the blur effect for glass elements
-                </p>
-              </div>
+              )}
 
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
@@ -176,8 +201,6 @@ const SettingsWidget = () => {
                   Adjust the size of text throughout the interface
                 </p>
               </div>
-
-              {/* Additional display settings could go here */}
             </div>
           </TabsContent>
 
@@ -187,7 +210,6 @@ const SettingsWidget = () => {
                 Configure widget behavior and defaults
               </p>
               
-              {/* Widget settings would go here */}
               <div className="text-xs text-muted-foreground">
                 More widget configuration options coming soon!
               </div>
