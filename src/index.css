@@ -33,6 +33,56 @@
     --ring: 212.7 26.8% 83.9%;
     
     --radius: 0.75rem;
+    
+    --blur-strength: 12px;
+    --border-radius: 12px;
+    --text-size: 1;
+    --glass-transparency: 0.05;
+    --solid-bg-color: 15, 15, 30;
+    --solid-bg-opacity: 0.85;
+    
+    --widget-text: 255, 255, 255;
+    --widget-text-muted: 180, 180, 190;
+    --widget-text-opacity: 1;
+    --widget-text-muted-opacity: 0.7;
+  }
+
+  .light {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    
+    --solid-bg-color: 240, 240, 245;
+    --solid-bg-opacity: 0.95;
+    
+    --widget-text: 30, 30, 50;
+    --widget-text-muted: 100, 100, 120;
+    --widget-text-opacity: 1;
+    --widget-text-muted-opacity: 0.8;
   }
 }
 
@@ -42,52 +92,113 @@
   }
   body {
     @apply bg-dashy-bg text-foreground;
-    background-color: #05051E;
+    background-color: hsl(var(--background));
     margin: 0;
     padding: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     min-height: 100vh;
     max-height: 100vh;
     overflow: hidden;
+    font-size: calc(1rem * var(--text-size, 1));
+    color: hsl(var(--foreground));
   }
 }
 
 @layer utilities {
+  .widget-text {
+    color: rgba(var(--widget-text), var(--widget-text-opacity));
+  }
+  
+  .widget-text-muted {
+    color: rgba(var(--widget-text-muted), var(--widget-text-muted-opacity));
+  }
+  
   .glass {
-    @apply backdrop-blur-lg border border-white/10 shadow-lg;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    @apply backdrop-blur border border-white/10 shadow-lg;
+    background: rgba(255, 255, 255, var(--glass-transparency, 0.05));
+    backdrop-filter: blur(var(--blur-strength, 12px));
+    -webkit-backdrop-filter: blur(var(--blur-strength, 12px));
   }
   
   .glass-widget {
-    @apply glass rounded-xl transition-all duration-300;
+    @apply glass transition-all duration-300;
+    border-radius: var(--border-radius, 12px);
+    color: rgba(var(--widget-text), var(--widget-text-opacity));
+  }
+  
+  .solid {
+    @apply border border-white/10 shadow-lg;
+    background: rgba(var(--solid-bg-color), var(--solid-bg-opacity));
+    border-radius: var(--border-radius, 12px);
+    color: rgba(var(--widget-text), var(--widget-text-opacity));
+  }
+  
+  .solid-widget {
+    @apply solid transition-all duration-300;
+  }
+  
+  .light .solid {
+    background: rgba(var(--solid-bg-color), var(--solid-bg-opacity));
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  .theme-button {
+    border-radius: var(--border-radius, 12px);
   }
   
   .widget-no-controls .widget-header {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
   
+  .light .widget-no-controls .widget-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
   .dock-item {
-    @apply rounded-full flex items-center justify-center cursor-pointer w-10 h-10 bg-white/10 
-    hover:bg-white/15 transition-all duration-200 text-white;
+    @apply rounded-full flex items-center justify-center cursor-pointer w-10 h-10 transition-all duration-200;
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(var(--widget-text), var(--widget-text-opacity));
+  }
+  
+  .light .dock-item {
+    background: rgba(0, 0, 0, 0.1);
   }
   
   .dock-item:hover {
     transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
+  }
+  
+  .light .dock-item:hover {
+    background: rgba(0, 0, 0, 0.15);
   }
   
   .dock {
-    @apply fixed bottom-6 left-1/2 transform -translate-x-1/2 glass rounded-full 
-    px-4 py-2 flex space-x-4 items-center border border-white/15;
+    @apply fixed bottom-6 left-1/2 transform -translate-x-1/2 rounded-full 
+    px-4 py-2 flex space-x-4 items-center;
+    backdrop-filter: blur(var(--blur-strength, 12px));
+    -webkit-backdrop-filter: blur(var(--blur-strength, 12px));
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+  
+  .light .dock {
+    background: rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
   }
   
   .widget-header {
-    @apply flex items-center p-3 border-b border-white/10 cursor-move;
+    @apply flex items-center p-3 cursor-move;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .light .widget-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   }
   
   .widget-body {
     @apply p-4;
+    color: rgba(var(--widget-text), var(--widget-text-opacity));
   }
   
   .window-controls {
@@ -111,13 +222,43 @@
   }
   
   .glass-button {
-    @apply bg-white/10 backdrop-blur-md py-1 px-3 rounded-md border border-white/20
-    transition-all duration-200 hover:bg-white/15 text-white;
+    @apply backdrop-blur-md py-1 px-3 rounded-md border transition-all duration-200;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: rgba(var(--widget-text), var(--widget-text-opacity));
+  }
+  
+  .light .glass-button {
+    background: rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  .glass-button:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+  
+  .light .glass-button:hover {
+    background: rgba(0, 0, 0, 0.15);
   }
   
   .glass-input {
-    @apply bg-white/5 backdrop-blur-md py-1.5 px-3 rounded-md border border-white/15
-    transition-all duration-200 focus:border-white/30 focus:outline-none text-white;
+    @apply backdrop-blur-md py-1.5 px-3 rounded-md border transition-all duration-200 focus:outline-none;
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: rgba(var(--widget-text), var(--widget-text-opacity));
+  }
+  
+  .light .glass-input {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  .glass-input:focus {
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+  
+  .light .glass-input:focus {
+    border-color: rgba(0, 0, 0, 0.2);
   }
 
   .wave-bg {
@@ -145,7 +286,6 @@
     animation: wave-motion 20s infinite alternate-reverse ease-in-out;
   }
   
-  /* Tooltip animations */
   .tooltip-enter {
     opacity: 0;
     transform: translateY(5px);
@@ -183,8 +323,8 @@
   }
 
   .notification-widget .widget-body {
-    overflow: hidden; /* Remove default scrolling */
-    height: calc(100% - 50px); /* Adjust for header height */
+    overflow: hidden;
+    height: calc(100% - 50px);
     padding: 0;
   }
 
@@ -193,7 +333,6 @@
     height: 100%;
   }
 
-  /* Custom scrollbar styling */
   .notification-widget .widget-body .overflow-y-auto::-webkit-scrollbar {
     width: 6px;
   }
@@ -211,30 +350,26 @@
     background-color: rgba(255, 255, 255, 0.3);
   }
 
-  /* For Firefox */
   .notification-widget .widget-body .overflow-y-auto {
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
   }
 
-  /* Smooth dragging */
   .widget {
     will-change: transform, left, top;
   }
 
-  /* Special widget styles for notification-related widgets */
   .youtube-widget, 
   .poll-widget, 
   .blog-reader-widget, 
   .event-details-widget, 
   .problem-details-widget, 
   .meeting-details-widget {
-    z-index: 15 !important; /* Higher z-index than regular widgets */
+    z-index: 15 !important;
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   }
 
-  /* POTD widget specific styles to ensure proper button layout */
   .problem-details-widget .widget-body {
     overflow: visible !important;
   }
@@ -257,7 +392,6 @@
   }
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .dock {
     @apply px-2 py-1;

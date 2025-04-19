@@ -1,4 +1,4 @@
-import { Clock, FileText, Cloud, Calculator, ListTodo, Search, Image, Quote, Bell } from 'lucide-react';
+import { Clock, FileText, Cloud, Calculator, ListTodo, Search, Image, Quote, Bell, Settings } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useNotificationContext } from '@/contexts/notification-context';
 
@@ -104,6 +104,17 @@ const Dock: React.FC<DockProps> = ({ onAddWidget, onToggleWallpaper, onToggleNot
           </TooltipTrigger>
           <TooltipContent side="top">
             <p>Notifications</p>
+          </TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button className="dock-item" onClick={() => onAddWidget('settings')}>
+              <Settings size={20} />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="top">
+            <p>Settings</p>
           </TooltipContent>
         </Tooltip>
 

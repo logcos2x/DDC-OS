@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 
 const ClockWidget = () => {
@@ -32,14 +31,14 @@ const ClockWidget = () => {
   
   return (
     <div className="flex flex-col items-center">
-      <div className="relative w-40 h-40 rounded-full border border-white/20 mb-4">
+      <div className="relative w-40 h-40 rounded-full border border-white/20 light:border-black/20 mb-4">
         {/* Clock face */}
         <div className="absolute inset-0 rounded-full flex items-center justify-center">
           {/* Hour markers */}
           {[...Array(12)].map((_, i) => (
             <div 
               key={i} 
-              className="absolute w-1 h-2 bg-white/50" 
+              className="absolute w-1 h-2 bg-white/50 light:bg-black/30" 
               style={{ 
                 transform: `rotate(${i * 30}deg) translateY(-18px)`,
                 transformOrigin: 'bottom center',
@@ -51,7 +50,7 @@ const ClockWidget = () => {
           
           {/* Hour hand */}
           <div 
-            className="absolute w-1 h-12 bg-white/90 rounded-full"
+            className="absolute w-1 h-12 bg-white/90 light:bg-black/70 rounded-full"
             style={{ 
               transform: `rotate(${hourDegrees}deg)`,
               transformOrigin: 'bottom center',
@@ -62,7 +61,7 @@ const ClockWidget = () => {
           
           {/* Minute hand */}
           <div 
-            className="absolute w-0.5 h-16 bg-white/80 rounded-full"
+            className="absolute w-0.5 h-16 bg-white/80 light:bg-black/60 rounded-full"
             style={{ 
               transform: `rotate(${minuteDegrees}deg)`,
               transformOrigin: 'bottom center',
@@ -83,12 +82,12 @@ const ClockWidget = () => {
           />
           
           {/* Center dot */}
-          <div className="absolute w-3 h-3 bg-white rounded-full" />
+          <div className="absolute w-3 h-3 bg-white light:bg-black/80 rounded-full" />
         </div>
       </div>
       
-      <div className="text-xl font-bold text-white mb-1">{formattedTime}</div>
-      <div className="text-sm text-gray-300">{formattedDate}</div>
+      <div className="text-xl font-bold widget-text mb-1">{formattedTime}</div>
+      <div className="text-sm widget-text-muted">{formattedDate}</div>
     </div>
   );
 };

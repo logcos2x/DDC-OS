@@ -22,6 +22,7 @@ import EventDetailsWidget from '@/components/widgets/EventDetailsWidget';
 import ProblemDetailsWidget from '@/components/widgets/ProblemDetailsWidget';
 import PollFormWidget from '@/components/widgets/PollFormWidget';
 import MeetingDetailsWidget from '@/components/widgets/MeetingDetailsWidget';
+import SettingsWidget from '@/components/widgets/SettingsWidget';
 
 const DEFAULT_WALLPAPERS = [
   'https://images.unsplash.com/photo-1662026911591-335639b11db6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY2MzY5MTI4MQ&ixlib=rb-1.2.1&q=80&w=1920',
@@ -274,6 +275,8 @@ const Index = () => {
         return <QuoteWidget />;
       case 'notification':
         return <NotificationCenterWidget />;
+      case 'settings':
+        return <SettingsWidget />;
       case 'youtube-player':
         return <YoutubePlayerWidget data={widgetProps} />;
       case 'blog-reader':
@@ -310,6 +313,8 @@ const Index = () => {
         return 'Quote';
       case 'notification':
         return 'Notifications';
+      case 'settings':
+        return 'Settings';
       case 'youtube-player':
         return widgetProps?.videoTitle || 'YouTube Video';
       case 'blog-reader':
@@ -338,6 +343,7 @@ const Index = () => {
       todo: 300,
       search: 300,
       notification: 350,
+      settings: 380, // wider to fit tabs and controls
       'youtube-player': 480,
       'poll-form': 600,
       'blog-reader': 500,
